@@ -47,14 +47,55 @@ chrome.extension.onMessage.addListener(function (request, sender) {
             model.fields.push({ name: fields[property], type: 'auto' });
         }   
     }
-    var appName = 'bbom';
-    var compName = 'boomer';
+    var appName = Ext.ComponentQuery.query('#appNameFld')[0].getValue();
+    var compName = Ext.ComponentQuery.query('#compNameFld')[0].getValue();
 
-    var model = 'Ext.define(\'' + appName + '.model.' + compName + '\',\'' + JSON.stringify(model, null, 2) + ');';
+    model = 'Ext.define(\'' + appName + '.model.' + compName + '\',' + JSON.stringify(model, null, 2) + ');';
     modelData = model;
     Ext.ComponentQuery.query('#modelFld')[0].setValue(modelData);
-    console.log(fields);
-    console.log(request.extraParams);
+
+    var store = {
+        extend: 'Ext.data.Store',
+        model: appName + '.model.' + compName,
+        autoLoad: true
+    };
+
+    store = 'Ext.define(\'' + appName + '.store.' + compName + 's' + '\',' + JSON.stringify(store, null, 2) + ');';
+    storeData = store;
+    Ext.ComponentQuery.query('#storeFld')[0].setValue(storeData);
+
+    var view = {
+        extend: 'Ext.grid.Panel',
+        requires: [],
+        controllers: [],
+        store: compName + 's',
+        xtype: compName,
+        viewConfig: {
+            //enableTextSelection: true,
+        },
+        features: [
+        ],
+        plugins: [
+            //'bufferedrenderer',
+        ],
+        tbar: {
+            items: [
+            ]
+        },
+        columns: [
+        ]
+    };
+
+    for (var property in fields) {
+        if (fields.hasOwnProperty(property)) {
+            view.columns.push({ header: fields[property], dataIndex: fields[property] });
+        }
+    }
+
+    view = 'Ext.define(\'' + appName + '.view.' + compName + '\',' + JSON.stringify(view, null, 2) + ')';
+    Ext.ComponentQuery.query('#viewFld')[0].setValue(view);
+    //console.log(fields);
+    //console.log(request.extraParams);
 });
 
 function onWindowLoad() {
@@ -125,7 +166,12 @@ function onWindowLoad() {
                         resizable: true,
                         height: 287,
                         width: 730,
-                        padding: 5
+                        padding: 5,
+                        listeners: {
+                            change: function (fld) {
+                                modelData = fld.getValue();
+                            }
+                        }
                     }]
                 }, {
                     title: 'Store',
@@ -136,7 +182,12 @@ function onWindowLoad() {
                         resizable: true,
                         height: 287,
                         width: 730,
-                        padding:5
+                        padding: 5,
+                        listeners: {
+                            change: function (fld) {
+                                storeData = fld.getValue();
+                            }
+                        }
                     }]
                 }, {
                     title: 'View',
@@ -147,7 +198,12 @@ function onWindowLoad() {
                         resizable: true,
                         height: 287,
                         width: 730,
-                        padding: 5
+                        padding: 5,
+                        listeners: {
+                            change: function (fld) {
+                                viewData = fld.getValue();
+                            }
+                        }
                     }]
                 }]
             }]
