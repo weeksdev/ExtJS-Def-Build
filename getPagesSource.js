@@ -55,5 +55,6 @@ chrome.extension.sendMessage({
     action: "getSource",
     source: getData(),
     extraParams: getJsonFromUrl(),
-    isJsonP:isJsonP()
+    isJsonP: isJsonP(),
+    url:location.href.replace(location.search,'')
 });

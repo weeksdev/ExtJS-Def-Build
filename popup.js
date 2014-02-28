@@ -27,7 +27,7 @@ chrome.extension.onMessage.addListener(function (request, sender) {
     var type = 'Ajax';
     if(request.isJsonP)
         type = 'JsonP';
-    var url = '';
+    var url = request.url;
     var model = {
         extend: 'Ext.data.Model',
         fields: [],
@@ -109,8 +109,45 @@ function onWindowLoad() {
             renderTo: Ext.getBody(),
             layout:'border',
             title: 'ExtJS Definition Builder',
-            height: 500,
-            width:750,
+            height: 525,
+            width: 750,
+            bbar: ['->',{
+                text: 'About',
+                handler: function (btn) {
+                    Ext.create('Ext.window.Window', {
+                        title: 'ExtJS Definition Builder',
+                        bbar: [{
+                            xtype: 'component',
+                            padding:'0 10 0',
+                            html: '<a href="https://github.com/weeksdev/ExtJS-Def-Build" target="_blank">GitHub</a>'
+                        }, '->', {
+                            text: 'close',
+                            handler: function (btn) {
+                                btn.up('window').close();
+                            }
+                        }],
+                        items: [{
+                            xtype: 'fieldset',
+                            border:0,
+                            items: [{
+                                xtype: 'displayfield',
+                                fieldLabel: 'By',
+                                value:'Andrew Weeks'
+                            }, {
+                                xtype: 'displayfield',
+                                fieldLabel: 'Created',
+                                value:'2/27/2014'
+                            }, {
+                                xtype: 'displayfield',
+                                fieldLabel: 'GitHub',
+                                value:'This project is open and available on GitHub'
+                            }]
+                        }],
+                        width: 400,
+                        height:200
+                    }).show()   ;
+                }
+            }],
             items: [{
                 xtype: 'panel',
                 collapsible: true,
