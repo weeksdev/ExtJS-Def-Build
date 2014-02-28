@@ -1,0 +1,16 @@
+﻿{
+  "manifest_version": 2,
+
+  "name": "ExtJS Definition Builder",
+  "description": "This extension interprets json from the active tab and creates the corresponding extjs files required.",
+  "version": "1.0",
+  "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",
+  "permissions": [
+	"tabs",
+	"<all_urls>"
+  ],
+  "browser_action": {
+    "default_icon": "icon.png",
+    "default_popup": "popup.html"
+  }
+}
