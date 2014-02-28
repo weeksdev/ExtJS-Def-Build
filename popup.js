@@ -1,6 +1,8 @@
 modelData = '';
 storeData = '';
 viewData = '';
+appName = '';
+compName = '';
 
 chrome.extension.onMessage.addListener(function (request, sender) {
     var root = Ext.ComponentQuery.query('#rootFld')[0].getValue();
@@ -47,8 +49,8 @@ chrome.extension.onMessage.addListener(function (request, sender) {
             model.fields.push({ name: fields[property], type: 'auto' });
         }   
     }
-    var appName = Ext.ComponentQuery.query('#appNameFld')[0].getValue();
-    var compName = Ext.ComponentQuery.query('#compNameFld')[0].getValue();
+    appName = Ext.ComponentQuery.query('#appNameFld')[0].getValue();
+    compName = Ext.ComponentQuery.query('#compNameFld')[0].getValue();
 
     model = 'Ext.define(\'' + appName + '.model.' + compName + '\',' + JSON.stringify(model, null, 2) + ');';
     modelData = model;
@@ -150,7 +152,8 @@ function onWindowLoad() {
                     handler: click
                 }, '->', {
                     xtype: 'button',
-                    text: 'Download Files'
+                    text: 'Download Files',
+                    handler: download
                 }]
             }, {
                 xtype: 'panel',
@@ -209,6 +212,22 @@ function onWindowLoad() {
             }]
         });
     });
+}
+function download (btn) {
+    console.log('got here');
+    var zip = new JSZip();
+    var model = zip.folder('model');
+    model.file(compName + '.js', modelData);
+    var store = zip.folder('store');
+    store.file(compName + 's.js', storeData);
+    var view = zip.folder('view');
+    view.file(compName + '.js', viewData);
+    var content = zip.generate();
+    window.open("data:application/zip;base64," + content);
+    //chrome.tabs.getSelected(null, function (tab) {
+    //    chrome.tabs.create({ url: "data:application/zip;base64," + content, index: tab.id });
+    //});
+    
 }
 
 function click() {
