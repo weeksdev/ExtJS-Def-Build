@@ -1,8 +1,9 @@
-modelData = '';
-storeData = '';
-viewData = '';
-appName = '';
-compName = '';
+var modelData = '';
+var storeData = '';
+var viewData = '';
+var root = '';
+var appName = '';
+var compName = '';
 
 chrome.extension.onMessage.addListener(function (request, sender) {
 
@@ -12,11 +13,21 @@ chrome.extension.onMessage.addListener(function (request, sender) {
         return;
     }
 
-    var root = Ext.ComponentQuery.query('#rootFld')[0].getValue();
+    //fill out required field variables.
+    root = Ext.ComponentQuery.query('#rootFld')[0].getValue();
+    appName = Ext.ComponentQuery.query('#appNameFld')[0].getValue();
+    compName = Ext.ComponentQuery.query('#compNameFld')[0].getValue();
+
+    //make sure required fields were provided.
+    if (root == '' || appName == '' || compName == '') {
+        Ext.Msg.alert('Missing Fields', 'Required fields were not completed.');
+        return;
+    }
+
     //console.log(root);
     var jsonObj = request.source;
     var nested = root.split('.');
-    console.log(nested);
+    //console.log(nested);
     for (var x = 0; x <= nested.length - 1; x++) {
         jsonObj = jsonObj[nested[x]];
     }
@@ -56,8 +67,7 @@ chrome.extension.onMessage.addListener(function (request, sender) {
             model.fields.push({ name: fields[property], type: 'auto' });
         }   
     }
-    appName = Ext.ComponentQuery.query('#appNameFld')[0].getValue();
-    compName = Ext.ComponentQuery.query('#compNameFld')[0].getValue();
+    
 
     model = 'Ext.define(\'' + appName + '.model.' + compName + '\',' + JSON.stringify(model, null, 2) + ');';
 
@@ -167,7 +177,8 @@ function onWindowLoad() {
                     xtype: 'textfield',
                     itemId: 'rootFld',
                     emptyText: 'Root...',
-                    value:Ext.util.Cookies.get('rootFld'),
+                    value: Ext.util.Cookies.get('rootFld'),
+                    allowBlank:false,
                     listeners: {
                         change: function (fld) {
                             Ext.util.Cookies.set(fld.itemId, fld.getValue());
@@ -178,6 +189,7 @@ function onWindowLoad() {
                     itemId: 'appNameFld',
                     emptyText: 'App Name...',
                     value: Ext.util.Cookies.get('appNameFld'),
+                    allowBlank: false,
                     listeners: {
                         change: function (fld) {
                             Ext.util.Cookies.set(fld.itemId, fld.getValue());
@@ -188,6 +200,7 @@ function onWindowLoad() {
                     itemId: 'compNameFld',
                     emptyText: 'Component Name...',
                     value: Ext.util.Cookies.get('compNameFld'),
+                    allowBlank: false,
                     listeners: {
                         change: function (fld) {
                             Ext.util.Cookies.set(fld.itemId, fld.getValue());
