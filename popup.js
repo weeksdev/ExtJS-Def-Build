@@ -36,16 +36,22 @@ chrome.extension.onMessage.addListener(function (request, sender) {
         jsonObj = jsonObj[0];
     }
 
+
     var fields = [];
     for (var property in jsonObj) {
         if (jsonObj.hasOwnProperty(property)) {
             fields.push(property);
         }
     }
+
+    //create model object and convert to string for display.
+
     var type = 'Ajax';
     if(request.isJsonP)
         type = 'JsonP';
     var url = request.url;
+
+    
     var model = {
         extend: 'Ext.data.Model',
         fields: [],
@@ -75,6 +81,7 @@ chrome.extension.onMessage.addListener(function (request, sender) {
     modelData = model.replace(/\"([^(\")"]+)\":/g, "$1:");
     Ext.ComponentQuery.query('#modelFld')[0].setValue(modelData);
 
+    //create store object and convert to string for display.
     var store = {
         extend: 'Ext.data.Store',
         model: appName + '.model.' + compName,
@@ -85,6 +92,7 @@ chrome.extension.onMessage.addListener(function (request, sender) {
     storeData = store.replace(/\"([^(\")"]+)\":/g, "$1:");;
     Ext.ComponentQuery.query('#storeFld')[0].setValue(storeData);
 
+    //create view object and convert to string for display.
     var view = {
         extend: 'Ext.grid.Panel',
         requires: [],
@@ -129,7 +137,7 @@ function onWindowLoad() {
             renderTo: Ext.getBody(),
             layout:'border',
             title: 'ExtJS Definition Builder',
-            height: 525,
+            height: 550,
             width: 750,
             bbar: ['->',{
                 text: 'About',
@@ -211,8 +219,8 @@ function onWindowLoad() {
                     text: 'Submit',
                     handler: click
                 }, '->', {
-                    xtype: 'button',
-                    text: 'Download Files',
+                    xtype: 'tool',
+                    type:'save',
                     handler: download
                 }]
             }, {
@@ -223,6 +231,12 @@ function onWindowLoad() {
                 items: [{
                     title: 'Model',
                     xtype: 'panel',
+                    tbar: [{
+                        text:'Sencha Docs',
+                        handler: function (btn) {
+                            window.open('http://docs.sencha.com/extjs/4.2.2/#!/api/Ext.data.Model','_blank');
+                        }
+                    }],
                     items:[{
                         xtype:'textarea',
                         itemId: 'modelFld',
@@ -240,6 +254,12 @@ function onWindowLoad() {
                 }, {
                     title: 'Store',
                     xtype: 'panel',
+                    tbar: [{
+                        text: 'Sencha Docs',
+                        handler: function (btn) {
+                            window.open('http://docs.sencha.com/extjs/4.2.2/#!/api/Ext.data.Store', '_blank');
+                        }
+                    }],
                     items:[{
                         xtype:'textarea',
                         itemId: 'storeFld',
