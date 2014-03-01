@@ -2,9 +2,11 @@
     try {
         var innerText = document.body.innerText;
         //figure out if callback was specified and needs to be parsed from the response.
-        var callback = RegExp(/\?.*callback=(.*)/).exec(document.URL)[1];
+        var callback = RegExp(/\?.*callback=(.*)/).exec(document.URL);
         //figure out the callback name.
+        console.log(callback);
         if (callback) {
+            callback = callback[1];
             //determine if there is other params in the response to ignore
             if (callback.indexOf('&') != -1) {
                 var loc1 = callback.indexOf('&');
@@ -18,7 +20,7 @@
         return obj;
     }
     catch (ex) {
-        return { hadError: true, exception: ex };
+        return false;
     }
 }
 
@@ -35,9 +37,10 @@ function getJsonFromUrl() {
 }
 
 function isJsonP() {
-    var callback = RegExp(/\?.*callback=(.*)/).exec(document.URL)[1];
+    var callback = RegExp(/\?.*callback=(.*)/).exec(document.URL);
     //figure out the callback name.
     if (callback) {
+        callback = callback[1];
         //determine if there is other params in the response to ignore
         if (callback.indexOf('&') != -1) {
             var loc1 = callback.indexOf('&');
@@ -45,7 +48,7 @@ function isJsonP() {
         }
     }
 
-    if (callback == '')
+    if (callback == null || callback == '')
         return false;
     else
         return true;

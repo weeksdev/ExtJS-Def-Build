@@ -5,11 +5,18 @@ appName = '';
 compName = '';
 
 chrome.extension.onMessage.addListener(function (request, sender) {
+
+    //check if error occured in parsing data
+    if (!request.source) {
+        Ext.Msg.alert('Unknown Error', 'An error occured parsing the data.');
+        return;
+    }
+
     var root = Ext.ComponentQuery.query('#rootFld')[0].getValue();
     //console.log(root);
     var jsonObj = request.source;
     var nested = root.split('.');
-
+    console.log(nested);
     for (var x = 0; x <= nested.length - 1; x++) {
         jsonObj = jsonObj[nested[x]];
     }
@@ -53,7 +60,9 @@ chrome.extension.onMessage.addListener(function (request, sender) {
     compName = Ext.ComponentQuery.query('#compNameFld')[0].getValue();
 
     model = 'Ext.define(\'' + appName + '.model.' + compName + '\',' + JSON.stringify(model, null, 2) + ');';
-    modelData = model;
+
+    //http://stackoverflow.com/questions/11233498/json-stringify-without-quotes-on-properties
+    modelData = model.replace(/\"([^(\")"]+)\":/g, "$1:");
     Ext.ComponentQuery.query('#modelFld')[0].setValue(modelData);
 
     var store = {
@@ -63,7 +72,7 @@ chrome.extension.onMessage.addListener(function (request, sender) {
     };
 
     store = 'Ext.define(\'' + appName + '.store.' + compName + 's' + '\',' + JSON.stringify(store, null, 2) + ');';
-    storeData = store;
+    storeData = store.replace(/\"([^(\")"]+)\":/g, "$1:");;
     Ext.ComponentQuery.query('#storeFld')[0].setValue(storeData);
 
     var view = {
@@ -95,7 +104,8 @@ chrome.extension.onMessage.addListener(function (request, sender) {
     }
 
     view = 'Ext.define(\'' + appName + '.view.' + compName + '\',' + JSON.stringify(view, null, 2) + ')';
-    Ext.ComponentQuery.query('#viewFld')[0].setValue(view);
+    viewData = view.replace(/\"([^(\")"]+)\":/g, "$1:");
+    Ext.ComponentQuery.query('#viewFld')[0].setValue(viewData);
     //console.log(fields);
     //console.log(request.extraParams);
 });
@@ -203,7 +213,8 @@ function onWindowLoad() {
                     items:[{
                         xtype:'textarea',
                         itemId: 'modelFld',
-                        resizable: true,
+                        //resizable: true,
+                        fieldStyle: 'background-color:#eeeeee !important; background-image:none !important;',
                         height: 287,
                         width: 730,
                         padding: 5,
@@ -219,7 +230,8 @@ function onWindowLoad() {
                     items:[{
                         xtype:'textarea',
                         itemId: 'storeFld',
-                        resizable: true,
+                        //resizable: true,
+                        fieldStyle: 'background-color:#eeeeee !important; background-image:none !important;',
                         height: 287,
                         width: 730,
                         padding: 5,
@@ -235,7 +247,8 @@ function onWindowLoad() {
                     items:[{
                         xtype:'textarea',
                         itemId: 'viewFld',
-                        resizable: true,
+                        //resizable: true,
+                        fieldStyle: 'background-color:#eeeeee !important; background-image:none !important;',
                         height: 287,
                         width: 730,
                         padding: 5,
