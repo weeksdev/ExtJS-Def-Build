@@ -121,7 +121,7 @@ chrome.extension.onMessage.addListener(function (request, sender) {
         }
     }
 
-    view = 'Ext.define(\'' + appName + '.view.' + compName + '\',' + JSON.stringify(view, null, 2) + ')';
+    view = 'Ext.define(\'' + appName + '.view.' + compName + '\',' + JSON.stringify(view, null, 2) + ');';
     viewData = view.replace(/\"([^(\")"]+)\":/g, "$1:");
     Ext.ComponentQuery.query('#viewFld')[0].setValue(viewData);
     //console.log(fields);
