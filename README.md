@@ -21,7 +21,7 @@ Installing the development version of the extension is easy.
   * App name that the files will be used in
   * Component name to use for the components being generated
 
-
+[![Alt text for your video](http://img.youtube.com/vi/NPBU8yOZ2Ew/0.jpg)](http://www.youtube.com/watch?v=NPBU8yOZ2Ew)
 
 ###Next Steps
 If you'd like to contribute let me know.  Feel free to fork the project as well.
