@@ -24,10 +24,9 @@ chrome.extension.onMessage.addListener(function (request, sender) {
         return;
     }
 
-    //console.log(root);
     var jsonObj = request.source;
     var nested = root.split('.');
-    //console.log(nested);
+
     for (var x = 0; x <= nested.length - 1; x++) {
         jsonObj = jsonObj[nested[x]];
     }
@@ -45,10 +44,9 @@ chrome.extension.onMessage.addListener(function (request, sender) {
     }
 
     //create model object and convert to string for display.
-
-    var type = 'Ajax';
+    var type = 'ajax';
     if(request.isJsonP)
-        type = 'JsonP';
+        type = 'jsonp';
     var url = request.url;
 
     
@@ -124,8 +122,6 @@ chrome.extension.onMessage.addListener(function (request, sender) {
     view = 'Ext.define(\'' + appName + '.view.' + compName + '\',' + JSON.stringify(view, null, 2) + ');';
     viewData = view.replace(/\"([^(\")"]+)\":/g, "$1:");
     Ext.ComponentQuery.query('#viewFld')[0].setValue(viewData);
-    //console.log(fields);
-    //console.log(request.extraParams);
 });
 
 function onWindowLoad() {
