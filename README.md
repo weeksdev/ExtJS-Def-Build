@@ -10,7 +10,18 @@ A chrome extension to make building mvc(s) components easy in ExtJS.  Simply spe
 Installing the development version of the extension is easy.
 * Download and unzip the project.
 * Load an unpacked extension in Chrome browser.
-<iframe width="560" height="315" src="//www.youtube.com/embed/BD_SQDHYaVY" frameborder="0" allowfullscreen></iframe>
+
+[![Alt text for your video](http://img.youtube.com/vi/BD_SQDHYaVY/0.jpg)](http://www.youtube.com/watch?v=BD_SQDHYaVY)
+
+###How To Use Extension
+* Do a query in browser to the json response you are looking to parse/use.
+* Click on the extension (will display a pop-up window)
+* In the popup provide the following info:
+  * Root of data in json
+  * App name that the files will be used in
+  * Component name to use for the components being generated
+
 
 
 ###Next Steps
+If you'd like to contribute let me know.  Feel free to fork the project as well.
