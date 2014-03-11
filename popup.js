@@ -57,7 +57,6 @@ chrome.extension.onMessage.addListener(function (request, sender) {
             type: type,
             url: url,
             extraParams: request.extraParams,
-            headers: { 'Content-type': 'text/json;  charset=utf-8', 'Accepts': 'text/json' },
             reader: {
                 type: 'json',
                 root: root,
