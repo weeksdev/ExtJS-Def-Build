@@ -31,7 +31,7 @@ chrome.extension.onMessage.addListener(function (request, sender) {
         jsonObj = jsonObj[nested[x]];
     }
 
-    if (jsonObj.length > 1) {
+    if (jsonObj.length > 0) {
         jsonObj = jsonObj[0];
     }
 
